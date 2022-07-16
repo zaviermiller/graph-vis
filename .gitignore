@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Archives
+*.zip
+*.7z
+*.rar
+*.bz2
+*.xz
+*.z
+*.gz
+*.tgz
+*.tar*
