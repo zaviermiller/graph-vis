@@ -1,5 +1,5 @@
 import { Graph, GraphNode } from '../graph';
-import { Vec2d } from '../simple_vec';
+import Vec2d from '../vec2d';
 
 /**
  * Spring electrical simulation, implementation of 2.1 in

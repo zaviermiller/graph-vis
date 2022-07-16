@@ -1,5 +1,5 @@
 import { Graph, GraphNode } from '../graph';
-import { Vec2d } from '../simple_vec';
+import Vec2d from '../vec2d';
 
 export interface EadesOptions {
   falloff?: number;

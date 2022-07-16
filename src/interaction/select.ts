@@ -1,6 +1,6 @@
 import { Graph, GraphNode } from '../graph';
 import CanvasRenderer from '../render/canvas_renderer';
-import { Vec2d } from '../simple_vec';
+import Vec2d from '../vec2d';
 import { getNodeAt } from './util';
 
 export default class SelectAction {
