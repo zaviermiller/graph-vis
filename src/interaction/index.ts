@@ -1,4 +1,5 @@
-import { default as PinAction, default as SelectAction } from './select';
+import PinAction from './pin';
+import SelectAction from './select';
 
 export { SelectAction, PinAction };
 
