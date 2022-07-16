@@ -28,7 +28,7 @@ export default class PinAction {
         this.graph,
         x,
         y,
-        this.canvasRenderer.options.radius
+        this.canvasRenderer.options.nodeRadius
       );
       if (node) {
         if (this.pinned.includes(node.id)) {

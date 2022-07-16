@@ -25,7 +25,7 @@ function main() {
   //   [0, 1, 0, 0],
   //   [1, 1, 0, 0],
   // ]);
-  const g2 = GraphFactory.create_random(100, 0.1);
+  const g2 = GraphFactory.create_random(10, 0.5);
 
   // const eOpts: EadesOptions = {
   //   idealLength: 10,
@@ -36,7 +36,7 @@ function main() {
   // };
 
   const seOps = {
-    K: 15,
+    K: 20,
     maxStepSize: 10,
     tolerance: 1,
   };
@@ -55,7 +55,7 @@ function main() {
   // canvasRenderer renders the graph to the canvas
   // using the data from the simulation manager
   const canvasRenderer = new CanvasRenderer('#graph', simManager, {
-    radius: 5,
+    nodeRadius: 15,
   });
   // CanvasRenderer.DEBUG = true;
 

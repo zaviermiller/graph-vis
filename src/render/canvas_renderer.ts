@@ -6,11 +6,11 @@ interface EventHandlers {
 }
 
 export interface CanvasRendererOptions {
-  radius: number;
+  nodeRadius: number;
 }
 
 const DEFAULT_OPTIONS: CanvasRendererOptions = {
-  radius: 10,
+  nodeRadius: 10,
 };
 
 // singleton class CanvasRenderer
@@ -64,7 +64,7 @@ export default class CanvasRenderer {
         this.simulationManager.selected === node1.id ||
         this.simulationManager.selected === node2.id;
       ctx.beginPath();
-      ctx.lineWidth = this.options.radius / 3;
+      ctx.lineWidth = this.options.nodeRadius / 3;
       ctx.strokeStyle = edgeSelected ? '#818ef7' : '#666';
       ctx.moveTo(node1.pos!.x, node1.pos!.y);
       ctx.lineTo(node2.pos!.x, node2.pos!.y);
@@ -74,21 +74,26 @@ export default class CanvasRenderer {
     graph.nodes.forEach((node) => {
       const pos = node.pos!;
       ctx.beginPath();
-      ctx.strokeStyle =
-        node.id == this.simulationManager.selected ? '#666' : '#f2f2f2';
+      if (node.id == this.simulationManager.selected) {
+        ctx.strokeStyle = '#818ef7';
+      } else if (this.simulationManager.pinned.includes(node.id)) {
+        ctx.strokeStyle = '#cf3230';
+      } else {
+        ctx.strokeStyle = '#d68629';
+      }
       ctx.fillStyle = this.simulationManager.pinned.includes(node.id)
-        ? '#818ef7'
+        ? '#f54542'
         : '#fca643';
-      ctx.lineWidth = this.options.radius / 2;
-      ctx.arc(pos.x, pos.y, this.options.radius, 0, 2 * Math.PI);
+      ctx.lineWidth = this.options.nodeRadius / 2;
+      ctx.arc(pos.x, pos.y, this.options.nodeRadius, 0, 2 * Math.PI);
       ctx.stroke();
       ctx.fill();
       ctx.fillStyle = '#fff';
-      ctx.font = `${this.options.radius}px monospace`;
+      ctx.font = `${this.options.nodeRadius}px monospace`;
       ctx.fillText(
         `${node.id}`,
-        pos.x - this.options.radius / 3,
-        pos.y + this.options.radius / 3
+        pos.x - this.options.nodeRadius / 3,
+        pos.y + this.options.nodeRadius / 3
       );
       if (CanvasRenderer.DEBUG) {
         ctx.fillStyle = '#000';

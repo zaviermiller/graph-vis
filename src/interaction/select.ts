@@ -27,7 +27,7 @@ export default class SelectAction {
         this.graph,
         x,
         y,
-        this.canvasRenderer.options.radius
+        this.canvasRenderer.options.nodeRadius
       );
       if (node) {
         this.canvasRenderer.simulationManager.selected = node.id;
@@ -49,7 +49,7 @@ export default class SelectAction {
         this.graph,
         x,
         y,
-        this.canvasRenderer.options.radius
+        this.canvasRenderer.options.nodeRadius
       );
       if (node) {
         this.canvasRenderer.simulationManager.selected = node.id;
