@@ -33,6 +33,17 @@ export class SimulationManager {
     this.originalPos = new Array(graph.nodes.length);
   }
 
+  setup(canvasWidth: number, canvasHeight: number) {
+    this.graph.nodes.forEach((node) => {
+      const x =
+        (Math.random() * canvasWidth) / 2 + (Math.random() * canvasWidth) / 2;
+      const y =
+        (Math.random() * canvasHeight) / 2 + (Math.random() * canvasHeight) / 2;
+
+      node.pos = new Vec2d(x, y);
+    });
+  }
+
   start() {
     this.stopped = false;
   }

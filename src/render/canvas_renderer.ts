@@ -46,6 +46,8 @@ export default class CanvasRenderer {
 
     this.canvas.height = this.canvas.scrollHeight;
     this.canvas.width = this.canvas.scrollWidth;
+
+    this.simulationManager.setup(this.canvas.width, this.canvas.height);
   }
 
   render() {

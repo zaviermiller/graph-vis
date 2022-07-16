@@ -8,11 +8,10 @@ import {
   mdiPinOutline,
   mdiPlay,
 } from '@mdi/js';
-import { Graph, GraphFactory } from './graph';
+import { GraphFactory } from './graph';
 import { SelectAction } from './interaction';
 import PinAction from './interaction/pin';
 import CanvasRenderer from './render/canvas_renderer';
-import { Vec2d } from './simple_vec';
 import { SimulationManager, SpringElectrical } from './simulation';
 import './style.css';
 import Button from './view/button';
@@ -20,8 +19,6 @@ import Button from './view/button';
 main();
 
 function main() {
-  const canvas = document.querySelector<HTMLCanvasElement>('#graph')!;
-
   // const g1 = GraphFactory.create([
   //   [0, 1, 0, 1],
   //   [1, 0, 1, 1],
@@ -47,18 +44,22 @@ function main() {
   // const eades = new Eades(eOpts);
   const simple = new SpringElectrical(seOps);
 
+  // simManager runs the simulation and holds
+  // relevant state required for rendering
   const simManager = new SimulationManager(g2, {
     simulation: simple,
     maxSteps: 1000,
     startPaused: true,
     tolerance: 1,
   });
+  // canvasRenderer renders the graph to the canvas
+  // using the data from the simulation manager
   const canvasRenderer = new CanvasRenderer('#graph', simManager, {
     radius: 5,
   });
   // CanvasRenderer.DEBUG = true;
 
-  // create actions
+  // actions for interacting with the graph
   const selectAction = new SelectAction(simManager.graph, canvasRenderer);
   const pinAction = new PinAction(simManager.graph, canvasRenderer);
 
@@ -89,20 +90,6 @@ function main() {
     else simManager.stop();
   });
 
-  // randomly init positions
-  init_pos(simManager.graph, canvas);
-
   // begin simulation
   canvasRenderer.renderLoop();
-}
-
-function init_pos(graph: Graph, canvas: HTMLCanvasElement) {
-  graph.nodes.forEach((node) => {
-    const x =
-      (Math.random() * canvas.width) / 2 + (Math.random() * canvas.width) / 2;
-    const y =
-      (Math.random() * canvas.height) / 2 + (Math.random() * canvas.height) / 2;
-
-    node.pos = new Vec2d(x, y);
-  });
 }
