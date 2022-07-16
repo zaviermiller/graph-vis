@@ -42,6 +42,32 @@ export function adjMat(g: Graph): number[][] {
   return adj;
 }
 
+export function randomizeEdges(g: Graph, freq: number) {
+  g.edges.forEach((edge) => {
+    edge.node1.edges.delete(edge.node2.id);
+    edge.node2.edges.delete(edge.node1.id);
+  });
+
+  g.edges = [];
+
+  for (const node of g.nodes) {
+    for (const n2 of g.nodes) {
+      if (Math.random() < freq) {
+        const edge = { node1: node, node2: n2 };
+        g.edges.push(edge);
+        node.edges.set(n2.id, edge);
+        n2.edges.set(node.id, edge);
+      }
+    }
+  }
+}
+
+export function removeEdge(g: Graph, edge: Edge) {
+  edge.node1.edges.delete(edge.node2.id);
+  edge.node2.edges.delete(edge.node1.id);
+  g.edges = g.edges.filter((e) => e !== edge);
+}
+
 export class GraphFactory {
   static create(adjList: number[][]): Graph {
     let nodes: GraphNode[] = [];

@@ -59,13 +59,22 @@ export default class CanvasRenderer {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // draw edges, then draw nodes
-    graph.edges.forEach(({ node1, node2 }) => {
+    graph.edges.forEach((edge) => {
+      const node1 = edge.node1;
+      const node2 = edge.node2;
       const edgeSelected =
         this.simulationManager.selected === node1.id ||
         this.simulationManager.selected === node2.id;
       ctx.beginPath();
       ctx.lineWidth = this.options.nodeRadius / 3;
-      ctx.strokeStyle = edgeSelected ? '#818ef7' : '#666';
+      if (edgeSelected) {
+        ctx.strokeStyle = '#818ef7';
+      } else if (edge === this.simulationManager.activeEdge) {
+        ctx.strokeStyle = '#f54542';
+      } else {
+        ctx.strokeStyle = '#666';
+      }
+      // ctx.strokeStyle = edgeSelected ? '#818ef7' : '#666';
       ctx.moveTo(node1.pos!.x, node1.pos!.y);
       ctx.lineTo(node2.pos!.x, node2.pos!.y);
       ctx.stroke();

@@ -35,7 +35,7 @@ export default class Button {
   handle(event: string, action?: (e: Event) => void) {
     this.el.addEventListener(event, (e) => {
       this.toggleGroup?.forEach((b) => {
-        b.deactivate();
+        if (b !== this) b.deactivate();
       });
       this.toggle();
       if (action) action(e);
@@ -44,6 +44,11 @@ export default class Button {
 
   toggle() {
     this.active = !this.active;
+    if (!this.active) {
+      this.el.classList.remove('active');
+    } else {
+      this.el.classList.add('active');
+    }
     iconFor(this.el, this.active ? this.activeIcon : this.icon);
     if (this.action) {
       if (this.active) this.action.activate();
@@ -53,7 +58,14 @@ export default class Button {
 
   activate() {
     this.active = true;
+    this.el.classList.add('active');
+    console.log(this.el.classList);
     iconFor(this.el, this.activeIcon);
+    // deactivate other btns in group
+    this.toggleGroup?.forEach((b) => {
+      if (b !== this) b.deactivate();
+    });
+
     if (this.action) {
       this.action.activate();
     }
@@ -61,6 +73,7 @@ export default class Button {
 
   deactivate() {
     this.active = false;
+    this.el.classList.remove('active');
     iconFor(this.el, this.icon);
     if (this.action) {
       this.action.deactivate();

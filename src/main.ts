@@ -1,21 +1,18 @@
 import {
-  mdiCursorDefault,
+  mdiContentCut,
   mdiCursorDefaultOutline,
-  mdiHandBackRight,
   mdiHandBackRightOutline,
   mdiPause,
-  mdiPin,
   mdiPinOutline,
   mdiPlay,
 } from '@mdi/js';
-import { adjMat, GraphFactory } from './graph';
-import { SelectAction } from './interaction';
+import { adjMat, GraphFactory, randomizeEdges } from './graph';
+import { DeleteEdgeAction, SelectAction } from './interaction';
 import PinAction from './interaction/pin';
 import CanvasRenderer from './render/canvas_renderer';
 import { SimulationManager, SpringElectrical } from './simulation';
 import './style.css';
-import { TextArea } from './view';
-import Button from './view/button';
+import { Button, Number, Range, TextArea } from './view';
 
 main();
 
@@ -60,25 +57,31 @@ function main() {
   });
   // CanvasRenderer.DEBUG = true;
 
-  // actions for interacting with the graph
-  const selectAction = new SelectAction(canvasRenderer);
-  const pinAction = new PinAction(canvasRenderer);
-
   // create buttons with linked actions
-  const pinBtn = new Button('#actions .pin', mdiPinOutline, mdiPin, pinAction);
+  const pinBtn = new Button(
+    '#actions .pin',
+    mdiPinOutline,
+    mdiPinOutline,
+    new PinAction(canvasRenderer)
+  );
   const panBtn = new Button(
     '#actions .pan',
     mdiHandBackRightOutline,
-    mdiHandBackRight
+    mdiHandBackRightOutline
   );
   const selectBtn = new Button(
     '#actions .select',
     mdiCursorDefaultOutline,
-    mdiCursorDefault,
-    selectAction
+    mdiCursorDefaultOutline,
+    new SelectAction(canvasRenderer)
   );
   const playBtn = new Button('#actions .play-pause', mdiPlay, mdiPause);
-  console.log(JSON.stringify(adjMat(graph)));
+  const cutEdgeBtn = new Button(
+    '#actions .cut-edge',
+    mdiContentCut,
+    mdiContentCut,
+    new DeleteEdgeAction(canvasRenderer)
+  );
   const graphInput = new TextArea(
     '#graph-input',
     JSON.stringify(adjMat(graph))
@@ -90,9 +93,22 @@ function main() {
 
     canvasRenderer.setup();
   });
+  const edgeFreqRange = new Range('#edge-freq-input', 0.5);
+  edgeFreqRange.onInput((value: number) => {
+    randomizeEdges(simManager.graph, value);
+  });
+
+  const numNodesInput = new Number('#count-input', 10);
+  numNodesInput.onChange((value: number) => {
+    const newGraph = GraphFactory.create_random(value, 0.5);
+    simManager.graph = newGraph;
+    canvasRenderer.graph = newGraph;
+
+    canvasRenderer.setup();
+  });
 
   // group buttons
-  Button.group(selectBtn, panBtn, pinBtn);
+  Button.group(selectBtn, panBtn, pinBtn, cutEdgeBtn);
 
   panBtn.handle('click', () => {
     console.log('TODO: panning');

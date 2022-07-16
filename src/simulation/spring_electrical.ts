@@ -49,7 +49,7 @@ export default class SpringElectrical {
     // if (nDone == graph.nodes.length) this.done = true;
   }
 
-  attractive(n1: GraphNode, n2: GraphNode) {
+  attractive(n1: GraphNode, n2: GraphNode): Vec2d {
     const n1Pos = n1.pos!;
     const n2Pos = n2.pos!;
 
@@ -60,7 +60,7 @@ export default class SpringElectrical {
     return distanceVec.unit().scalarMult(-1 * firstFactor);
   }
 
-  repulsive(n1: GraphNode, n2: GraphNode) {
+  repulsive(n1: GraphNode, n2: GraphNode): Vec2d {
     const n1Pos = n1.pos!;
     const n2Pos = n2.pos!;
 

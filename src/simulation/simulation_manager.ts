@@ -1,5 +1,5 @@
 import { Simulation } from '.';
-import { deepCopy, Graph, GraphNode } from '../graph';
+import { deepCopy, Edge, Graph, GraphNode } from '../graph';
 import Vec2d from '../vec2d';
 
 export interface SimulationOptions {
@@ -24,6 +24,7 @@ export class SimulationManager {
   // extra state
   pinned: number[] = [];
   selected: number = -1;
+  activeEdge: Edge | null = null;
 
   constructor(graph: Graph, options: SimulationOptions) {
     this.options = options;
