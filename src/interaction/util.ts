@@ -6,13 +6,11 @@ export function getNodeAt(
   y: number,
   radius: number
 ): GraphNode | null {
-  console.log(radius);
   for (const node of graph.nodes) {
     const dx = node.pos!.x - x;
     const dy = node.pos!.y - y;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < radius) {
-      console.log('detected');
       return node;
     }
   }

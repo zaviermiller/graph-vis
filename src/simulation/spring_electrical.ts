@@ -23,7 +23,6 @@ export default class SpringElectrical {
 
   step(graph: Graph): void {
     this.graph = graph;
-    let nDone = 0;
 
     for (const n1 of graph.nodes) {
       if (n1.edges.size == 0) continue;
@@ -32,7 +31,6 @@ export default class SpringElectrical {
         const n2 = n1 == edge.node1 ? edge.node2 : edge.node1;
         const force = this.attractive(n1, n2);
         totalForce = totalForce.add(force);
-        // console.log(force.magnitude());
       });
 
       for (const n2 of graph.nodes) {
@@ -41,10 +39,8 @@ export default class SpringElectrical {
         const force = this.repulsive(n1, n2);
         totalForce = totalForce.add(force);
       }
-      // console.log(totalForce.magnitude());
 
-      if (totalForce.magnitude() <= this.options.tolerance) nDone++;
-      else {
+      if (totalForce.magnitude() > this.options.tolerance) {
         totalForce = totalForce.unit().scalarMult(this.options.maxStepSize);
         n1.pos = totalForce.add(n1.pos!);
       }

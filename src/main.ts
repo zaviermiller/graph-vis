@@ -7,19 +7,13 @@ import {
   mdiPin,
   mdiPinOutline,
   mdiPlay,
-  mdiRestore,
 } from '@mdi/js';
 import { Graph, GraphFactory } from './graph';
 import { SelectAction } from './interaction';
 import PinAction from './interaction/pin';
 import CanvasRenderer from './render/canvas_renderer';
 import { Vec2d } from './simple_vec';
-import {
-  Eades,
-  EadesOptions,
-  SimulationManager,
-  SpringElectrical,
-} from './simulation';
+import { SimulationManager, SpringElectrical } from './simulation';
 import './style.css';
 import Button from './view/button';
 
@@ -28,21 +22,21 @@ main();
 function main() {
   const canvas = document.querySelector<HTMLCanvasElement>('#graph')!;
 
-  const g1 = GraphFactory.create([
-    [0, 1, 0, 1],
-    [1, 0, 1, 1],
-    [0, 1, 0, 0],
-    [1, 1, 0, 0],
-  ]);
+  // const g1 = GraphFactory.create([
+  //   [0, 1, 0, 1],
+  //   [1, 0, 1, 1],
+  //   [0, 1, 0, 0],
+  //   [1, 1, 0, 0],
+  // ]);
   const g2 = GraphFactory.create_random(100, 0.1);
 
-  const eOpts: EadesOptions = {
-    idealLength: 10,
-    springConstant: 1,
-    repulsionConstant: 2,
-    falloff: 0.99,
-    minChange: 3,
-  };
+  // const eOpts: EadesOptions = {
+  //   idealLength: 10,
+  //   springConstant: 1,
+  //   repulsionConstant: 2,
+  //   falloff: 0.99,
+  //   minChange: 3,
+  // };
 
   const seOps = {
     K: 15,
@@ -50,7 +44,7 @@ function main() {
     tolerance: 1,
   };
 
-  const eades = new Eades(eOpts);
+  // const eades = new Eades(eOpts);
   const simple = new SpringElectrical(seOps);
 
   const simManager = new SimulationManager(g2, {
@@ -64,10 +58,11 @@ function main() {
   });
   // CanvasRenderer.DEBUG = true;
 
+  // create actions
   const selectAction = new SelectAction(simManager.graph, canvasRenderer);
   const pinAction = new PinAction(simManager.graph, canvasRenderer);
 
-  // create button icons
+  // create buttons with linked actions
   const pinBtn = new Button('.actions .pin', mdiPinOutline, mdiPin, pinAction);
   const panBtn = new Button(
     '.actions .pan',
@@ -81,24 +76,23 @@ function main() {
     selectAction
   );
   const playBtn = new Button('.actions .play-pause', mdiPlay, mdiPause);
-  const resetBtn = new Button('.actions .reset', mdiRestore);
-  // iconFor('.actions .play-pause', mdiPlayOutline);
 
+  // group buttons
   Button.group(selectBtn, panBtn, pinBtn);
 
-  panBtn.handle('click', () => {});
+  panBtn.handle('click', () => {
+    console.log('TODO: panning');
+  });
 
   playBtn.handle('click', () => {
     if (playBtn.active) simManager.start();
     else simManager.stop();
   });
-  // resetBtn.handle('click', () => {
-  //   simManager.graph = deepCopy(simManager.originalGraph);
-  //   playBtn.deactivate();
-  // });
 
+  // randomly init positions
   init_pos(simManager.graph, canvas);
 
+  // begin simulation
   canvasRenderer.renderLoop();
 }
 
@@ -110,13 +104,5 @@ function init_pos(graph: Graph, canvas: HTMLCanvasElement) {
       (Math.random() * canvas.height) / 2 + (Math.random() * canvas.height) / 2;
 
     node.pos = new Vec2d(x, y);
-  });
-}
-
-function buttonToggle(selector: string) {
-  const button = document.querySelector(selector)!;
-  button.addEventListener('click', () => {
-    document.querySelector('button.active')?.classList.remove('active');
-    button.classList.toggle('active');
   });
 }

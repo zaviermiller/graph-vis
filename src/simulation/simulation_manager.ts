@@ -74,7 +74,7 @@ export class SimulationManager {
     this.options.simulation.step(graph);
 
     // update nodes with updated pos data and set them to graph nodes
-    graph.nodes.forEach((node, i) => {
+    graph.nodes.forEach((node) => {
       if (this.pinned.includes(node.id)) {
         node.pos = nodes.find((n) => node.id === n.id)!.pos;
       }
@@ -97,10 +97,8 @@ export class SimulationManager {
       }
     });
     if (count === nodes.length) {
-      console.log('STOPPING');
       this.stopped = true;
     } else {
-      console.log('STARTING');
       this.stopped = false;
     }
   }

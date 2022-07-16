@@ -22,7 +22,7 @@ export class Eades {
   step(graph: Graph) {
     if (this.done) return;
     this.graph = graph;
-    this.graph.nodes.forEach((node, i) => {
+    this.graph.nodes.forEach((node) => {
       const forceVec = this.getForce(node);
 
       if (
@@ -41,7 +41,7 @@ export class Eades {
     let totalRepulsion = new Vec2d(0, 0);
     let totalAttraction = new Vec2d(0, 0);
 
-    this.graph!.nodes.forEach((n2, j) => {
+    this.graph!.nodes.forEach((n2) => {
       if (node == n2) return;
       const repul = this.repulsiveForce(node, n2);
 

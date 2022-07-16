@@ -41,7 +41,7 @@ export default class CanvasRenderer {
 
   setup() {
     if (CanvasRenderer.DEBUG) {
-      window.$cr = this;
+      (<any>window).$cr = this;
     }
 
     this.canvas.height = this.canvas.scrollHeight;
@@ -116,7 +116,7 @@ export default class CanvasRenderer {
   addCanvasEvent(
     event: string,
     name: string,
-    builder: (canvas: HTMLCanvasElement) => (e: Event | MouseEvent) => void
+    builder: (canvas: HTMLCanvasElement) => (e: any) => void
   ) {
     this.addRawCanvasEvent(event, name, builder(this.canvas));
   }

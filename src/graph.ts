@@ -41,7 +41,7 @@ export class GraphFactory {
     let edges: Edge[] = [];
 
     // create nodes
-    adjList.forEach((v, i) => {
+    adjList.forEach((_, i) => {
       const node = {
         id: i,
         edges: new Map<number, Edge>(),

@@ -1,4 +1,4 @@
-import { Action } from './interaction';
+import { Action } from '../interaction';
 
 export interface ButtonState {
   icon: string;

@@ -1,5 +1,5 @@
-import CanvasRenderer from '../canvas_renderer';
 import { Graph } from '../graph';
+import CanvasRenderer from '../render/canvas_renderer';
 import { SimulationManager } from '../simulation';
 import { getNodeAt } from './util';
 
@@ -21,7 +21,6 @@ export default class PinAction {
   onClick(canvas: HTMLCanvasElement): (e: MouseEvent) => void {
     return (e: MouseEvent) => {
       if (!this.active) return;
-      console.log('heree');
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;

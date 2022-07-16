@@ -1,5 +1,5 @@
-import CanvasRenderer from '../canvas_renderer';
 import { Graph, GraphNode } from '../graph';
+import CanvasRenderer from '../render/canvas_renderer';
 import { Vec2d } from '../simple_vec';
 import { getNodeAt } from './util';
 
@@ -72,7 +72,6 @@ export default class SelectAction {
         const y = e.clientY - rect.top;
 
         const posOffset = { x: x - this.origPos.x, y: y - this.origPos.y };
-        // console.log(posOffset);
 
         if (this.selected)
           this.selected!.pos = new Vec2d(posOffset.x, posOffset.y).add(
@@ -82,8 +81,8 @@ export default class SelectAction {
     };
   }
 
-  onMouseUp(canvas: HTMLCanvasElement): (e: MouseEvent) => void {
-    return (e: MouseEvent) => {
+  onMouseUp(_: HTMLCanvasElement): (e: MouseEvent) => void {
+    return (_: MouseEvent) => {
       this.mouseDown = false;
       this.canvasRenderer.simulationManager.selected = -1;
       this.selected = null;
