@@ -1,5 +1,5 @@
 import { describe, expect, it, test } from 'vitest';
-import { deepCopy, GraphFactory } from '../src/graph';
+import { adjMat, deepCopy, GraphFactory } from '../src/graph';
 
 describe('Graph tests', () => {
   describe('GraphFactory tests', () => {
@@ -38,5 +38,29 @@ describe('Graph tests', () => {
     expect(graph2.nodes).toEqual(graph.nodes);
     expect(graph2.edges).toEqual(graph.edges);
     expect(graph2).not.toBe(graph);
+  });
+
+  describe('adjMat', () => {
+    it('should return correct adjacency matrix', () => {
+      const graph = GraphFactory.create([
+        [0, 1, 1, 0, 0, 0],
+        [1, 0, 1, 0, 0, 0],
+        [1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+      ]);
+
+      const adj = adjMat(graph);
+
+      expect(adj).toEqual([
+        [0, 1, 1, 0, 0, 0],
+        [1, 0, 1, 0, 0, 0],
+        [1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+      ]);
+    });
   });
 });

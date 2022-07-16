@@ -4,28 +4,26 @@ import { SimulationManager } from '../simulation';
 import { getNodeAt } from './util';
 
 export default class PinAction {
-  graph: Graph;
   active: boolean;
   pinned: number[];
   canvasRenderer: CanvasRenderer;
   simManager: SimulationManager;
 
-  constructor(graph: Graph, canvasRenderer: CanvasRenderer) {
-    this.graph = graph;
+  constructor(canvasRenderer: CanvasRenderer) {
     this.active = false;
     this.pinned = [];
     this.canvasRenderer = canvasRenderer;
     this.simManager = canvasRenderer.simulationManager;
   }
 
-  onClick(canvas: HTMLCanvasElement): (e: MouseEvent) => void {
+  onClick(canvas: HTMLCanvasElement, graph: Graph): (e: MouseEvent) => void {
     return (e: MouseEvent) => {
       if (!this.active) return;
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const node = getNodeAt(
-        this.graph,
+        graph,
         x,
         y,
         this.canvasRenderer.options.nodeRadius

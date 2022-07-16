@@ -123,9 +123,9 @@ export default class CanvasRenderer {
   addCanvasEvent(
     event: string,
     name: string,
-    builder: (canvas: HTMLCanvasElement) => (e: any) => void
+    builder: (canvas: HTMLCanvasElement, graph: Graph) => (e: any) => void
   ) {
-    this.addRawCanvasEvent(event, name, builder(this.canvas));
+    this.addRawCanvasEvent(event, name, builder(this.canvas, this.graph));
   }
 
   removeCanvasEvent(event: string, name: string) {

@@ -1,3 +1,4 @@
 import Button from './button';
+import TextArea from './textarea';
 
-export { Button };
+export { Button, TextArea };

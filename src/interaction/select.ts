@@ -4,31 +4,30 @@ import Vec2d from '../vec2d';
 import { getNodeAt } from './util';
 
 export default class SelectAction {
-  graph: Graph;
   canvasRenderer: CanvasRenderer;
   active: boolean;
   mouseDown: boolean;
   origPos: { x: number; y: number } = { x: 0, y: 0 };
   selected: GraphNode | null = null;
 
-  constructor(graph: Graph, canvasRenderer: CanvasRenderer) {
-    this.graph = graph;
+  constructor(canvasRenderer: CanvasRenderer) {
     this.active = false;
     this.mouseDown = false;
     this.canvasRenderer = canvasRenderer;
   }
 
-  onClick(canvas: HTMLCanvasElement): (e: MouseEvent) => void {
+  onClick(canvas: HTMLCanvasElement, graph: Graph): (e: MouseEvent) => void {
     return (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const node = getNodeAt(
-        this.graph,
+        graph,
         x,
         y,
         this.canvasRenderer.options.nodeRadius
       );
+      console.log(node);
       if (node) {
         this.canvasRenderer.simulationManager.selected = node.id;
         this.selected = node;
@@ -39,14 +38,17 @@ export default class SelectAction {
     };
   }
 
-  onMouseDown(canvas: HTMLCanvasElement): (e: MouseEvent) => void {
+  onMouseDown(
+    canvas: HTMLCanvasElement,
+    graph: Graph
+  ): (e: MouseEvent) => void {
     return (e: MouseEvent) => {
       if (!this.active) return;
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const node = getNodeAt(
-        this.graph,
+        graph,
         x,
         y,
         this.canvasRenderer.options.nodeRadius
@@ -64,7 +66,7 @@ export default class SelectAction {
     };
   }
 
-  onMouseMove(canvas: HTMLCanvasElement): (e: MouseEvent) => void {
+  onMouseMove(canvas: HTMLCanvasElement, _: Graph): (e: MouseEvent) => void {
     return (e: MouseEvent) => {
       if (this.active && this.mouseDown) {
         const rect = canvas.getBoundingClientRect();
@@ -81,7 +83,7 @@ export default class SelectAction {
     };
   }
 
-  onMouseUp(_: HTMLCanvasElement): (e: MouseEvent) => void {
+  onMouseUp(_: HTMLCanvasElement, __: Graph): (e: MouseEvent) => void {
     return (_: MouseEvent) => {
       this.mouseDown = false;
       this.canvasRenderer.simulationManager.selected = -1;

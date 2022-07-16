@@ -26,27 +26,43 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
   min-width: 320px;
   min-height: 100vh;
-  justify-content: center;
 }
 
 #app {
-  max-width: 1280px;
   padding: 2rem;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 20% auto 20%;
+  grid-template-rows: auto;
+  grid-template-areas: 
+    ". header ."
+    "left-sidebar main right-sidebar"
+    "left-sidebar actions right-sidebar";
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+#header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+#left-sidebar {
+  grid-area: left-sidebar;
 }
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+
+#right-sidebar {
+  grid-area: right-sidebar;
+}
+
+#main {
+  grid-area: main;
+}
+
+#actions {
+  grid-area: actions;
 }
 
 .card {
@@ -82,7 +98,7 @@ button > svg {
 }
 
 canvas#graph {
-  width: 60vw;
+  width: 100%;
   height: 60vh;
   background-color: #1a1a1a;
   border-radius: 20px;
@@ -108,11 +124,16 @@ canvas#graph {
 }
 
 
-.actions {
+#actions {
   display: flex;
   justify-content: space-between;
 }
 
-.actions > button {
+#actions > button {
   margin: 10px 5px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 0;
 }

@@ -35,6 +35,13 @@ export function deepCopy(g: Graph): Graph {
   return { nodes, edges };
 }
 
+export function adjMat(g: Graph): number[][] {
+  const adj = g.nodes.map((node) =>
+    g.nodes.map((n2) => (node.edges.has(n2.id) ? 1 : 0))
+  );
+  return adj;
+}
+
 export class GraphFactory {
   static create(adjList: number[][]): Graph {
     let nodes: GraphNode[] = [];

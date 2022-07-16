@@ -8,11 +8,21 @@
   </head>
   <body>
     <div id="app">
-      <h1>Graph visualizer</h1>
-      <canvas id="graph">
+      <div id="header">
+        <h1>Graph visualizer</h1>
+      </div>
 
-      </canvas>
-      <div class="actions">
+      <div id="left-sidebar">
+        <div class="field">
+          <p class="label">Graph</p>
+          <textarea id="graph-input" placeholder="Enter adjacency matrix"></textarea>
+        </div>
+      </div>
+
+      <div id="main">
+        <canvas id="graph"></canvas>
+      </div>
+      <div id="actions">
         <div class="sim-actions">
           <button class="play-pause"></button>
           <button class="reset"></button>
@@ -23,8 +33,12 @@
           <button class="pin"></button>
         </div>
       </div>
+    
+      <div id="right-sidebar">
+
+      </div>
+
     </div>
-    <div>sidenar</div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

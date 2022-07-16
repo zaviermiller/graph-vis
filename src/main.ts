@@ -8,24 +8,25 @@ import {
   mdiPinOutline,
   mdiPlay,
 } from '@mdi/js';
-import { GraphFactory } from './graph';
+import { adjMat, GraphFactory } from './graph';
 import { SelectAction } from './interaction';
 import PinAction from './interaction/pin';
 import CanvasRenderer from './render/canvas_renderer';
 import { SimulationManager, SpringElectrical } from './simulation';
 import './style.css';
+import { TextArea } from './view';
 import Button from './view/button';
 
 main();
 
 function main() {
-  // const g1 = GraphFactory.create([
+  // const graph = GraphFactory.create([
   //   [0, 1, 0, 1],
   //   [1, 0, 1, 1],
   //   [0, 1, 0, 0],
   //   [1, 1, 0, 0],
   // ]);
-  const g2 = GraphFactory.create_random(10, 0.5);
+  const graph = GraphFactory.create_random(10, 0.5);
 
   // const eOpts: EadesOptions = {
   //   idealLength: 10,
@@ -46,7 +47,7 @@ function main() {
 
   // simManager runs the simulation and holds
   // relevant state required for rendering
-  const simManager = new SimulationManager(g2, {
+  const simManager = new SimulationManager(graph, {
     simulation: simple,
     maxSteps: 1000,
     startPaused: true,
@@ -60,23 +61,35 @@ function main() {
   // CanvasRenderer.DEBUG = true;
 
   // actions for interacting with the graph
-  const selectAction = new SelectAction(simManager.graph, canvasRenderer);
-  const pinAction = new PinAction(simManager.graph, canvasRenderer);
+  const selectAction = new SelectAction(canvasRenderer);
+  const pinAction = new PinAction(canvasRenderer);
 
   // create buttons with linked actions
-  const pinBtn = new Button('.actions .pin', mdiPinOutline, mdiPin, pinAction);
+  const pinBtn = new Button('#actions .pin', mdiPinOutline, mdiPin, pinAction);
   const panBtn = new Button(
-    '.actions .pan',
+    '#actions .pan',
     mdiHandBackRightOutline,
     mdiHandBackRight
   );
   const selectBtn = new Button(
-    '.actions .select',
+    '#actions .select',
     mdiCursorDefaultOutline,
     mdiCursorDefault,
     selectAction
   );
-  const playBtn = new Button('.actions .play-pause', mdiPlay, mdiPause);
+  const playBtn = new Button('#actions .play-pause', mdiPlay, mdiPause);
+  console.log(JSON.stringify(adjMat(graph)));
+  const graphInput = new TextArea(
+    '#graph-input',
+    JSON.stringify(adjMat(graph))
+  );
+  graphInput.onChange(() => {
+    const newGraph = GraphFactory.create(JSON.parse(graphInput.value));
+    simManager.graph = newGraph;
+    canvasRenderer.graph = newGraph;
+
+    canvasRenderer.setup();
+  });
 
   // group buttons
   Button.group(selectBtn, panBtn, pinBtn);
